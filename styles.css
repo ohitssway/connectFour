@@ -1,0 +1,49 @@
+body {
+    text-align:center;
+    font-family: Helvetica, Arial, "Lucida Grande", sans-serif; 
+}
+
+button,table,td {
+    margin: 40px auto 0 auto;
+    background:#eee;
+}
+#game, body, button {
+    margin: 40px auto 0 auto;
+    background: lavender;
+}
+#game,#gameboard {
+    width:620px;
+}
+
+#gameboard,.leg {
+    background:#1094cc;
+}
+
+#gameboard td {
+    width:76px;
+    height:76px;
+    border-radius:40px;			
+}
+
+#gameboard {
+    padding:10px;
+    border-spacing:4px;
+    border-bottom-width:0;
+    border-radius:12px 12px 12px 12px;
+}
+
+#gameboard .Drake {
+    background-image:url('pieces/drake.png');
+}
+
+#gameboard .Kanye {
+    background-image:url('pieces/kanye.png');
+}
+
+#gameboard td {
+    border-color:#1094cc;
+}
+
+#n,#w,#a,#b {
+    display:none;
+}
