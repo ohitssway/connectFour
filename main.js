@@ -2,12 +2,25 @@
     start = function(){
         finished = false;
         changePlayer();
-    },  		
+    }, 
+    kanyeWon = function(){
+        modal.style.display = "block";
+        modalImg.src = "celebration/kanye.jpg";
+        captionText.innerHTML = "Kanye won!";
+    },
+    drakeWon = function(){
+        modal.style.display = "block";
+        modalImg.src = "celebration/drake.gif";
+        captionText.innerHTML = "Drake won!";
+    },
     newGame = function(message){
-        if (confirm(message)){
-            start();
-            forAllCells(emptyField);
+        if(players[current] == 'Kanye'){
+            kanyeWon();
+        }else{
+            drakeWon();
         }
+        start();
+        forAllCells(emptyField);
     },
     element = function(id){
         return doc.getElementById(id);
@@ -56,41 +69,17 @@
             }
         }
         return true;
-    },                        
-    diagonalWon = function(i,j){
-        count = 0;
-        var idx = i;
-        var jdx = j;
-        while(idx < 7 && jdx > -1){
-            if(!sameColor(idx, jdx)){
-                count = 0;
-            }else{
-                count += 1;
-            }
-            if(count == 4){
-                return true;
-            }
-            idx += 1;
-            jdx -= 1;
-        }
-        count = 0;
-        idx = i;
-        jdx = j;
-        while(idx > - 1 && jdx < 8){
-            if(!sameColor(idx, jdx)){
-                count = 0;
-            }else{
-                count += 1;
-            }
-            if(count == 4){
-                return true;
-            }
-            idx -= 1;
-            jdx += 1;
-        }
-
-        return false;
-    },         
+    }, 
+    diagonalLtrWon = function(i,j){
+        for(var min=i-1,t=j-1;min>0;min--,t--)if(t<1||!sameColor(min,t))break;
+        for(var max=i+1,t=j+1;max<7;max++,t++)if(t>7||!sameColor(max,t))break;
+        return max-min>4;
+    },                      
+    diagonalRtlWon = function(i,j){
+        for(var min=i-1,t=j+1;min>0;min--,t++)if(t>7||!sameColor(min,t))break;
+        for(var max=i+1,t=j-1;max<7;max++,t--)if(t<1||!sameColor(max,t))break;
+        return max-min>4;
+    },
     colorField = function(i,j,rapper){
         cell(i,j).className = rapper;
     },                      
@@ -107,7 +96,7 @@
                     for (var t = 6;t>0;t--){
                         if(testClass(t,j,'')){
                             colorField(t,j,players[current]);
-                            if(horizontalWon(t,j) || verticalWon(t,j) || diagonalWon(t,j)){
+                            if(horizontalWon(t,j) || verticalWon(t,j) || diagonalLtrWon(t,j) || diagonalRtlWon(t,j)){
                                 finished = true;
                                 newGame(newGameMessage);
                             } else {
@@ -120,6 +109,11 @@
             }
         }(j);
     },
+    modal = document.getElementById("myModal"),
+    kanyeCelebration = document.getElementById("myImg"),
+    modalImg = document.getElementById("img01"),
+    captionText = document.getElementById("caption"),
+    span = document.getElementsByClassName("close")[0],
     players = [value("a"),value("b")],
     current = 0,
     newGameMessage = value("n"),
@@ -127,6 +121,9 @@
     finished = false;
     start();
     forAllCells(addCellBehavior);
+    span.onclick = function() { 
+        modal.style.display = "none";
+    };
     element("r").onclick = function(){
         newGame(newGameMessage)
     };
